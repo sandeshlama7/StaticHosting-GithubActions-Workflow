@@ -54,5 +54,5 @@
     project_path: "{{ project_dir }}"
     virtualenv: "{{ venv_dir }}"
 
-- name: Create systemd service file for Django application
+- name: Run Django application
   command: nohup {{ venv_dir }}/bin/python {{ project_dir }}/manage.py runserver 0.0.0.0:8000 &
