@@ -38,5 +38,5 @@ jobs:
         working-directory: Terraform
 
       - name: Terraform Apply
-        run: terraform apply -avar-file=dev.tfvars -auto-approve
+        run: terraform apply --var-file=dev.tfvars -auto-approve
         working-directory: Terraform
