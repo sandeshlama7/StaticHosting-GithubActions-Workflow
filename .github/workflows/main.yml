@@ -63,8 +63,8 @@ jobs:
       - name: Install ansible
         run: pip3 install ansible
 
-      # - name: Set AWS Profile
-      #   run: echo "AWS_PROFILE=default" >> $GITHUB_ENV
+      - name: Set AWS Profile
+        run: echo "AWS_PROFILE=default" >> $GITHUB_ENV
 
       - name: Ansible graph
         run: ansible-inventory -i aws_ec2.yml --graph
