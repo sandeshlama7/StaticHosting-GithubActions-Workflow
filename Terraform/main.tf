@@ -2,6 +2,7 @@ module "ec2_instance" {
   source = "terraform-aws-modules/ec2-instance/aws"
 
   name                   = var.names.ec2
+  ami                    = var.ami
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.sg.id]
   subnet_id              = var.subnet_id

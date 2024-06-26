@@ -10,3 +10,7 @@ variable "subnet_id" {
   description = "Subnet ID of poc us-east-1f public subnet"
   type        = string
 }
+variable "ami" {
+  description = "Ami of the EC2"
+  type        = string
+}
