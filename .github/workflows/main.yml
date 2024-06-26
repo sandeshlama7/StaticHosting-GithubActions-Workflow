@@ -68,7 +68,7 @@ jobs:
         working-directory: Ansible
 
       - name: Run Ansible Playbook
-        run: ansible-playbook -i aws_ec2.yml playbook.yml -v
+        run: ansible-playbook -i aws_ec2.yml playbook.yml -vv
         working-directory: Ansible
         # env:
         #   ANSIBLE_HOST_KEY_CHECKING: false
