@@ -3,8 +3,6 @@ run-name: Destroying Infrastructure
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["INTERN-761"]
 
 jobs:
   destroy_infra:
@@ -22,7 +20,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
         run: terraform init

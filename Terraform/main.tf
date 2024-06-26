@@ -1,11 +1,11 @@
 module "ec2_instance" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
+  source = "terraform-aws-modules/ec2-instance/aws"
 
-  name = var.names.ec2
+  name                   = var.names.ec2
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.sg.id]
   subnet_id              = var.subnet_id
-  iam_instance_profile = aws_iam_instance_profile.iam_instance_profile.name
+  iam_instance_profile   = aws_iam_instance_profile.iam_instance_profile.name
 
   tags = {
     Name = var.names.ec2
@@ -13,30 +13,30 @@ module "ec2_instance" {
 }
 
 resource "aws_security_group" "sg" {
-    name = "SG-tf"
-    description = "Security Group for the EC2 instance"
-    vpc_id = data.aws_vpc.vpc.id
-    tags = {
-      Name = var.names.sg
-    }
-    ingress  {
-        description = "Allow HTTP"
-        cidr_blocks = local.cidr_all
-        from_port = 80
-        to_port = 80
-        protocol = "tcp"
-    }
-    egress {
-        description = "Outbound Rule"
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = local.cidr_all
-    }
+  name        = "SG-tf"
+  description = "Security Group for the EC2 instance"
+  vpc_id      = data.aws_vpc.vpc.id
+  tags = {
+    Name = var.names.sg
+  }
+  ingress {
+    description = "Allow HTTP"
+    cidr_blocks = local.cidr_all
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+  }
+  egress {
+    description = "Outbound Rule"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = local.cidr_all
+  }
 }
 
 data "aws_vpc" "vpc" {
-    id = "vpc-03d964f7cd3fa2c74"
+  id = "vpc-03d964f7cd3fa2c74"
 }
 
 data "aws_iam_policy" "ssm_ec2" {
