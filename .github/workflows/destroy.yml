@@ -3,6 +3,8 @@ run-name: Destroying Infrastructure
 
 on:
   workflow_dispatch:
+  push:
+    branches: ["INTERN-761"]
 
 jobs:
   destroy_infra:

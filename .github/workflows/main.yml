@@ -4,8 +4,8 @@ run-name: ${{ github.actor }} is testing the pipeline
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "INTERN-761" ]
+  # push:
+  #   branches: [ "INTERN-761" ]
 jobs:
   setup_infra:
     runs-on: ubuntu-latest
