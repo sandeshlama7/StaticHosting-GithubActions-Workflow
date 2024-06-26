@@ -5,7 +5,7 @@ module "ec2_instance" {
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.sg.id]
   subnet_id              = var.subnet_id
-  iam_instance_profile = aws_iam_instance_profile.iam_instance_profile
+  iam_instance_profile = aws_iam_instance_profile.iam_instance_profile.name
 
   tags = {
     Name = var.names.ec2
@@ -15,7 +15,7 @@ module "ec2_instance" {
 resource "aws_security_group" "sg" {
     name = "SG-tf"
     description = "Security Group for the EC2 instance"
-    vpc_id = aws_vpc.vpc.id
+    vpc_id = data.aws_vpc.vpc.id
     tags = {
       Name = var.names.sg
     }
@@ -66,5 +66,5 @@ resource "aws_iam_role_policy_attachment" "attach_ssm_role" {
 
 resource "aws_iam_instance_profile" "iam_instance_profile" {
   name = "Sandesh_Instance_Profile"
-  role = aws_iam_role.ssm_ec2.name
+  role = aws_iam_role.iam.name
 }
