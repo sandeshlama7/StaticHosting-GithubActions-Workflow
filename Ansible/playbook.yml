@@ -1,5 +1,5 @@
 ---
-- name: NodeJS Application Using Ansible
+- name: Django Application Using Ansible
   hosts: aws_ec2
   become: true
   gather_facts: false
