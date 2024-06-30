@@ -30,9 +30,9 @@ resource "aws_security_group" "sg" {
   ingress {
     description = "Django App Port"
     cidr_blocks = local.cidr_all
-    from_port = 8000
-    to_port = 8000
-    protocol = "tcp"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
   }
   egress {
     description = "Outbound Rule"

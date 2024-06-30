@@ -1,8 +1,7 @@
 - name: Clone git repo
   ansible.builtin.git:
     repo: "https://github.com/yeshwanthlm/django-on-ec2.git"
-    # dest: "{{ project_dir }}"
-    dest: /home/ubuntu/django-on-ec2
+    dest: "{{ project_dir }}"
     force: yes
 
 - name: Update apt
