@@ -9,6 +9,12 @@ on:
 jobs:
   setup_infra:
     runs-on: ubuntu-latest
+    env:
+      WORKING_DIR: Terraform
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIR }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,24 +32,20 @@ jobs:
         with:
           terraform_wrapper: false
 
-      - name: Terraform Version
-        run: echo "Terraform version=$(terraform --version)"
-
       - name: Terraform Init
         run: terraform init
-        working-directory: Terraform
 
       - name: Terraform Plan
         run: terraform plan --var-file=dev.tfvars
-        working-directory: Terraform
 
       - name: Terraform Apply
         run: terraform apply --var-file=dev.tfvars -auto-approve
-        working-directory: Terraform
 
   configure_ansible:
     runs-on: ubuntu-latest
     needs: setup_infra
+    env:
+      ANSIBLE_DIR: Ansible
 
     steps:
       - name: Checkout
@@ -57,16 +59,9 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
-      - name: Ensure boto3 and botocore modules are installed
-        run : pip3 install boto3 botocore
-
-      - name: Install ansible
-        run: pip3 install ansible
-
-      - name: Ansible graph
-        run: ansible-inventory -i aws_ec2.yml --graph
-        working-directory: Ansible
+      - name: Ensure ansible, boto3 and botocore modules are installed
+        run : pip3 install ansible boto3 botocore
 
       - name: Run Ansible Playbook
         run: ansible-playbook -i aws_ec2.yml playbook.yml
-        working-directory: Ansible
+        working-directory: ${{ env.ANSIBLE_DIR }}
