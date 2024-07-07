@@ -6,9 +6,19 @@ on:
   # push:
   #   braches: ["INTERN-761"]
 
+env:
+  backend-bucket: "8586-terraform-state"
+  backend-key: "sandesh/terraform.tfstate"
+  backend-region: "us-east-1"
+  TF_DIR: Terraform
+
 jobs:
   destroy_infra:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{env.TF_DIR}}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,9 +35,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        run: terraform init
-        working-directory: Terraform
+        run: terraform init -backend-config="bucket=${{env.backend-bucket}}" -backendconfig="key=${{env.backend-key}}" -backend-config="region=${{env.backend-region}}"
 
       - name: Terraform Destroy
         run: terraform destroy --var-file=./dev.tfvars -auto-approve
-        working-directory: Terraform
