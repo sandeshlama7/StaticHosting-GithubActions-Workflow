@@ -6,7 +6,9 @@
 
 - name: Update apt
   apt:
-    name: python3-venv
+    name:
+      - python3-venv
+      - python3-pip
     state: present
     update_cache: yes
 
@@ -15,13 +17,12 @@
     path: "{{ project_dir }}/manage.py"
     mode: '0755'
 
-- name: Create a virtual environment inside the project directory
-  # shell: python3 -m venv virtualenv
-  # args:
-  #   chdir: "{{ project_dir }}"
+- name: Create a virtual environment inside the project directory and install django
   pip:
+    name: django
+    chdir: "{{ project_dir }}"
+    virtualenv_command: python3 -m venv virtualenv
     virtualenv: "{{ venv_dir }}"
-    virtualenv_python: python3.10
 
 - name: Activate venv
   shell: ". {{ venv_dir }}/bin/activate"
@@ -33,12 +34,6 @@
     executable: "{{ venv_dir }}/bin/pip"
     name: pip
     state: latest
-
-
-- name: Install Django in virtual environment
-  pip:
-    executable: "{{ venv_dir }}/bin/pip"
-    name: django
 
 - name: Make migrations
   django_manage:
