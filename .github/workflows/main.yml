@@ -4,8 +4,10 @@ run-name: ${{ github.actor }} is testing the pipeline
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "INTERN-761" ]
+  # push:
+  #   branches: [ "INTERN-761", "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 env:
   backend-bucket: "8586-terraform-state"
@@ -39,7 +41,7 @@ jobs:
           terraform_wrapper: false
 
       - name: Terraform Init
-        run: terraform init -backend-config="bucket=${{env.backend-bucket}}" -backendconfig="key=${{env.backend-key}}" -backend-config="region=${{env.backend-region}}"
+        run: terraform init -backend-config="bucket=${{env.backend-bucket}}" -backend-config="key=${{env.backend-key}}" -backend-config="region=${{env.backend-region}}"
 
       - name: Terraform Plan
         run: terraform plan -var-file=dev.tfvars
