@@ -1,0 +1,53 @@
+- name: Clone git repo
+  ansible.builtin.git:
+    repo: "https://github.com/yeshwanthlm/django-on-ec2.git"
+    dest: "{{ project_dir }}"
+    force: yes
+
+- name: Update apt
+  apt:
+    name:
+      - python3-venv
+      - python3-pip
+    state: present
+    update_cache: yes
+
+- name: Change permissions of manage.py
+  file:
+    path: "{{ project_dir }}/manage.py"
+    mode: '0755'
+
+- name: Create a virtual environment inside the project directory and install django
+  pip:
+    name: django
+    chdir: "{{ project_dir }}"
+    virtualenv_command: python3 -m venv virtualenv
+    virtualenv: "{{ venv_dir }}"
+
+- name: Activate venv
+  shell: ". {{ venv_dir }}/bin/activate"
+  args:
+    executable: /bin/bash
+
+- name: Upgrade pip in virtual environment
+  pip:
+    executable: "{{ venv_dir }}/bin/pip"
+    name: pip
+    state: latest
+
+- name: Make migrations
+  django_manage:
+    command: makemigrations
+    project_path: "{{ project_dir }}"
+    virtualenv: "{{ venv_dir }}"
+
+- name: Migrate
+  django_manage:
+    command: migrate
+    project_path: "{{ project_dir }}"
+    virtualenv: "{{ venv_dir }}"
+
+- name: Run Django application
+  shell: nohup {{ venv_dir }}/bin/python {{ project_dir }}/manage.py runserver 0.0.0.0:8000 &
+  args:
+    executable: /bin/bash
